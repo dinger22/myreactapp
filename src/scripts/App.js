@@ -1,6 +1,7 @@
 import React from "react";
 import "../css/App.css";
 const App = () => {
+  const stars = utils.random(1, 9);
   return (
     <div className="game">
       <div className="help">
@@ -8,7 +9,7 @@ const App = () => {
       </div>
       <div className="body">
         <div className="left">
-          {utils.range(1, 9).map(starId => (
+          {utils.range(1, stars).map(starId => (
             <div key={starId} className="star" />
           ))}
         </div>
