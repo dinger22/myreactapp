@@ -1,8 +1,12 @@
 import React from "react";
 import "../css/App.css";
 
-const Number = props => (
-  <button key={props.number} className="number">
+const NumberButton = props => (
+  <button
+    className="number"
+    key={props.number}
+    onClick={() => console.log("Num", props.number)}
+  >
     {props.number}
   </button>
 );
@@ -22,7 +26,7 @@ const App = () => {
         </div>
         <div className="right">
           {utils.range(1, 9).map(num => (
-            <Number number={num}></Number>
+            <NumberButton number={num}></NumberButton>
           ))}
         </div>
       </div>
