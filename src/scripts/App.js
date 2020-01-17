@@ -20,12 +20,19 @@ const NumberButton = props => (
   </button>
 );
 
+const PlayAgain = props => (
+  <div className="game-done">
+    <button onClick={props.onClick}>Play Again</button>
+  </div>
+);
+
 const App = () => {
   const [availableNums, setAvailableNums] = useState(utils.range(1, 9));
   const [candidateNums, setCandidateNums] = useState([]);
   const [stars, setStars] = useState(utils.random(1, 9));
 
   const candidateAreWrong = utils.sum(candidateNums) > stars;
+  const gameIsDone = availableNums.length === 0;
   const numberStatus = number => {
     if (!availableNums.includes(number)) {
       return "used";
@@ -54,6 +61,13 @@ const App = () => {
       setCandidateNums([]);
     }
   };
+
+  const resetGame = () => {
+    setStars(utils.random(1, 9));
+    setAvailableNums(utils.range(1, 9));
+    setCandidateNums([]);
+  };
+
   return (
     <div className="game">
       <div className="help">
@@ -61,8 +75,8 @@ const App = () => {
       </div>
       <div className="body">
         <div className="left">
-          {availableNums.length === 0 ? (
-            <PlayAgain />
+          {gameIsDone ? (
+            <PlayAgain onClick={resetGame} />
           ) : (
             <StarsDisplay count={stars} />
           )}
