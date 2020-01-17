@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/App.css";
 
 const StarsDisplay = props => (
@@ -12,6 +12,7 @@ const StarsDisplay = props => (
 const NumberButton = props => (
   <button
     className="number"
+    style={{ backgroundColor: colors[props.status] }}
     key={props.number}
     onClick={() => console.log("Num", props.number)}
   >
@@ -20,7 +21,20 @@ const NumberButton = props => (
 );
 
 const App = () => {
-  const stars = utils.random(1, 9);
+  const [availableNums, setAvailableNums] = useState(utils.range(1, 9));
+  const [candidateNums, setCandidateNums] = useState([]);
+  const [stars, setStars] = useState(utils.random(1, 9));
+
+  const candidateAreWrong = utils.sum(candidateNums) > stars;
+  const numberStatus = number => {
+    if (!availableNums.includes(number)) {
+      return "used";
+    }
+    if (candidateNums.includes(number)) {
+      return candidateAreWrong ? "wrong" : "candidate";
+    }
+    return "available";
+  };
   return (
     <div className="game">
       <div className="help">
@@ -32,7 +46,11 @@ const App = () => {
         </div>
         <div className="right">
           {utils.range(1, 9).map(num => (
-            <NumberButton number={num}></NumberButton>
+            <NumberButton
+              key={num}
+              status={numberStatus(num)}
+              number={num}
+            ></NumberButton>
           ))}
         </div>
       </div>
