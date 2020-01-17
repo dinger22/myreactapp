@@ -1,5 +1,12 @@
 import React from "react";
 import "../css/App.css";
+
+const Number = props => (
+  <button key={props.number} className="number">
+    {props.number}
+  </button>
+);
+
 const App = () => {
   const stars = utils.random(1, 9);
   return (
@@ -14,8 +21,8 @@ const App = () => {
           ))}
         </div>
         <div className="right">
-          {utils.range(1, 9).map(number => (
-            <button className="number">{number}</button>
+          {utils.range(1, 9).map(num => (
+            <Number number={num}></Number>
           ))}
         </div>
       </div>
