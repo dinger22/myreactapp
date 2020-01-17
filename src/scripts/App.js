@@ -1,6 +1,14 @@
 import React from "react";
 import "../css/App.css";
 
+const StarsDisplay = props => (
+  <>
+    {utils.range(1, props.count).map(starId => (
+      <div key={starId} className="star" />
+    ))}
+  </>
+);
+
 const NumberButton = props => (
   <button
     className="number"
@@ -20,9 +28,7 @@ const App = () => {
       </div>
       <div className="body">
         <div className="left">
-          {utils.range(1, stars).map(starId => (
-            <div key={starId} className="star" />
-          ))}
+          <StarsDisplay count={stars} />
         </div>
         <div className="right">
           {utils.range(1, 9).map(num => (
