@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/App.css";
 
 const StarsDisplay = props => (
@@ -30,6 +30,16 @@ const App = () => {
   const [availableNums, setAvailableNums] = useState(utils.range(1, 9));
   const [candidateNums, setCandidateNums] = useState([]);
   const [stars, setStars] = useState(utils.random(1, 9));
+  const [secLeft, setSecLeft] = useState(10);
+  //setInterval, setTimeout
+  useEffect(() => {
+    if (secLeft > 0) {
+      const timerId = setTimeout(() => {
+        setSecLeft(secLeft - 1);
+      }, 1000);
+      return () => clearTimeout(timerId);
+    }
+  });
 
   const candidateAreWrong = utils.sum(candidateNums) > stars;
   const gameIsDone = availableNums.length === 0;
@@ -92,7 +102,7 @@ const App = () => {
           ))}
         </div>
       </div>
-      <div className="timer">Time Remaining: 10</div>
+      <div className="timer">Time Remaining: {secLeft}</div>
     </div>
   );
 };
