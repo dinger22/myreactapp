@@ -22,6 +22,12 @@ const NumberButton = props => (
 
 const PlayAgain = props => (
   <div className="game-done">
+    <div
+      className="message"
+      style={{ color: props.gameStatus === "lost" ? "red" : "green" }}
+    >
+      {props.gameStatus === "lost" ? "Game Over" : "Nice"}
+    </div>
     <button onClick={props.onClick}>Play Again</button>
   </div>
 );
@@ -33,7 +39,7 @@ const App = () => {
   const [secLeft, setSecLeft] = useState(10);
   //setInterval, setTimeout
   useEffect(() => {
-    if (secLeft > 0) {
+    if (secLeft > 0 && availableNums.length > 0) {
       const timerId = setTimeout(() => {
         setSecLeft(secLeft - 1);
       }, 1000);
@@ -42,7 +48,11 @@ const App = () => {
   });
 
   const candidateAreWrong = utils.sum(candidateNums) > stars;
-  const gameIsDone = availableNums.length === 0;
+  const gameStatus =
+    availableNums.length === 0 ? "won" : secLeft === 0 ? "lost" : "active";
+  // const gameIsDone = availableNums.length === 0;
+  // const gameIsLost = secLeft === 0;
+
   const numberStatus = number => {
     if (!availableNums.includes(number)) {
       return "used";
@@ -54,7 +64,7 @@ const App = () => {
   };
 
   const onClickNumber = (number, currentStatus) => {
-    if (currentStatus == "used") return;
+    if (gameStatus != "active" || currentStatus == "used") return;
 
     const newCandidateNums =
       currentStatus == "available"
@@ -85,8 +95,8 @@ const App = () => {
       </div>
       <div className="body">
         <div className="left">
-          {gameIsDone ? (
-            <PlayAgain onClick={resetGame} />
+          {gameStatus != "active" ? (
+            <PlayAgain onClick={resetGame} gameStatus={gameStatus} />
           ) : (
             <StarsDisplay count={stars} />
           )}
