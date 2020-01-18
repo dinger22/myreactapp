@@ -32,10 +32,10 @@ const PlayAgain = props => (
   </div>
 );
 
-const Game = props => {
+const useGameState = () => {
+  const [stars, setStars] = useState(utils.random(1, 9));
   const [availableNums, setAvailableNums] = useState(utils.range(1, 9));
   const [candidateNums, setCandidateNums] = useState([]);
-  const [stars, setStars] = useState(utils.random(1, 9));
   const [secLeft, setSecLeft] = useState(10);
   //setInterval, setTimeout
   useEffect(() => {
@@ -47,11 +47,34 @@ const Game = props => {
     }
   });
 
+  const setGameState = newCandidateNums => {
+    if (utils.sum(newCandidateNums) != stars) {
+      setCandidateNums(newCandidateNums);
+    } else {
+      const newAvailableNums = availableNums.filter(
+        n => !newCandidateNums.includes(n)
+      );
+      setStars(utils.randomSumIn(newAvailableNums, 9));
+      setAvailableNums(newAvailableNums);
+      setCandidateNums([]);
+    }
+  };
+
+  return { stars, availableNums, candidateNums, secLeft, setGameState };
+};
+
+const Game = props => {
+  const {
+    stars,
+    availableNums,
+    candidateNums,
+    secLeft,
+    setGameState
+  } = useGameState();
+
   const candidateAreWrong = utils.sum(candidateNums) > stars;
   const gameStatus =
     availableNums.length === 0 ? "won" : secLeft === 0 ? "lost" : "active";
-  // const gameIsDone = availableNums.length === 0;
-  // const gameIsLost = secLeft === 0;
 
   const numberStatus = number => {
     if (!availableNums.includes(number)) {
@@ -70,16 +93,8 @@ const Game = props => {
       currentStatus == "available"
         ? candidateNums.concat(number)
         : candidateNums.filter(cn => cn !== number);
-    if (utils.sum(newCandidateNums) != stars) {
-      setCandidateNums(newCandidateNums);
-    } else {
-      const newAvailableNums = availableNums.filter(
-        n => !newCandidateNums.includes(n)
-      );
-      setStars(utils.randomSumIn(newAvailableNums, 9));
-      setAvailableNums(newAvailableNums);
-      setCandidateNums([]);
-    }
+
+    setGameState(newCandidateNums);
   };
 
   return (
