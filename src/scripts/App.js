@@ -32,7 +32,7 @@ const PlayAgain = props => (
   </div>
 );
 
-const App = () => {
+const Game = props => {
   const [availableNums, setAvailableNums] = useState(utils.range(1, 9));
   const [candidateNums, setCandidateNums] = useState([]);
   const [stars, setStars] = useState(utils.random(1, 9));
@@ -82,12 +82,6 @@ const App = () => {
     }
   };
 
-  const resetGame = () => {
-    setStars(utils.random(1, 9));
-    setAvailableNums(utils.range(1, 9));
-    setCandidateNums([]);
-  };
-
   return (
     <div className="game">
       <div className="help">
@@ -96,7 +90,7 @@ const App = () => {
       <div className="body">
         <div className="left">
           {gameStatus != "active" ? (
-            <PlayAgain onClick={resetGame} gameStatus={gameStatus} />
+            <PlayAgain onClick={props.startNewGame} gameStatus={gameStatus} />
           ) : (
             <StarsDisplay count={stars} />
           )}
@@ -123,6 +117,11 @@ const colors = {
   used: "lightgreen",
   wrong: "lightcoral",
   candidate: "deepskyblue"
+};
+
+const App = () => {
+  const [gameKey, setGameKey] = useState(1);
+  return <Game key={gameKey} startNewGame={() => setGameKey(gameKey + 1)} />;
 };
 
 // Math utils
