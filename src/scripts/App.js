@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../css/App.css";
-
+//add comments
 const StarsDisplay = props => (
   <>
     {utils.range(1, props.count).map(starId => (
