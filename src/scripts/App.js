@@ -5,8 +5,10 @@ const StarsDisplay = props => (
   <>
     {utils.range(1, props.count).map(starId => (
       <div key={starId} className="star" />
+      
     ))}
   </>
+  
 );
 
 const NumberButton = props => (
@@ -36,7 +38,7 @@ const useGameState = () => {
   const [stars, setStars] = useState(utils.random(1, 9));
   const [availableNums, setAvailableNums] = useState(utils.range(1, 9));
   const [candidateNums, setCandidateNums] = useState([]);
-  const [secLeft, setSecLeft] = useState(10);
+  const [secLeft, setSecLeft] = useState(30);
   //setInterval, setTimeout
   useEffect(() => {
     if (secLeft > 0 && availableNums.length > 0) {
@@ -71,7 +73,21 @@ const Game = props => {
     secLeft,
     setGameState
   } = useGameState();
-
+  const StartGame = props => (
+    
+    <div className="game-start">
+      <div
+        className="message"
+        style={{ color: props.gameStatus === "active" ? "lightgray" : "red" }}
+      >
+        {props.gameStatus === "active" ? "Let's go!" : "See ya~"}
+        <button onClick={props.onClick} >Start Game</button>
+        
+      </div>
+      <StarsDisplay count={stars}/>
+      
+    </div>
+  );
   const candidateAreWrong = utils.sum(candidateNums) > stars;
   const gameStatus =
     availableNums.length === 0 ? "won" : secLeft === 0 ? "lost" : "active";
@@ -104,12 +120,16 @@ const Game = props => {
       </div>
       <div className="body">
         <div className="left">
+          
           {gameStatus != "active" ? (
             <PlayAgain onClick={props.startNewGame} gameStatus={gameStatus} />
           ) : (
-            <StarsDisplay count={stars} />
-          )}
+            <StartGame onClick={props.startNewGame} gameStatus={gameStatus} />
+            
+            )
+          }
         </div>
+       
         <div className="right">
           {utils.range(1, 9).map(num => (
             <NumberButton
