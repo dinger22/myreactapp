@@ -5,10 +5,10 @@ const StarsDisplay = props => (
   <>
     {utils.range(1, props.count).map(starId => (
       <div key={starId} className="star" />
-      
+
     ))}
   </>
-  
+
 );
 
 const NumberButton = props => (
@@ -74,7 +74,7 @@ const Game = props => {
     setGameState
   } = useGameState();
   const StartGame = props => (
-    
+
     <div className="game-start">
       <div
         className="message"
@@ -82,10 +82,10 @@ const Game = props => {
       >
         {props.gameStatus === "active" ? "Let's go!" : "See ya~"}
         <button onClick={props.onClick} >Start Game</button>
-        
+
       </div>
-      <StarsDisplay count={stars}/>
-      
+      <StarsDisplay count={stars} />
+
     </div>
   );
   const candidateAreWrong = utils.sum(candidateNums) > stars;
@@ -120,16 +120,16 @@ const Game = props => {
       </div>
       <div className="body">
         <div className="left">
-          
+
           {gameStatus != "active" ? (
             <PlayAgain onClick={props.startNewGame} gameStatus={gameStatus} />
           ) : (
-            <StartGame onClick={props.startNewGame} gameStatus={gameStatus} />
-            
+              <StartGame onClick={props.startNewGame} gameStatus={gameStatus} />
+
             )
           }
         </div>
-       
+
         <div className="right">
           {utils.range(1, 9).map(num => (
             <NumberButton
